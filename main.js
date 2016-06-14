@@ -48,7 +48,11 @@ var schema = Schema(`
          * args = parameter cth. id: Int
          */
         find_film (query, args){
-            console.log(query, args);
+            return {
+                title: 'Jason Bourne',
+                producers: ['matt','damon','zeihan'],
+                release_date: '2006-01-07'
+            }
         },
         find_character (query, args){
             console.log(query, args);
@@ -60,12 +64,14 @@ schema(`
     query find($film: Int){
         find_film(id: $film){
             title
+            producers
+            release_date
         }
     }
 `,{
     film: 1
 }).then(function (res){
-    console.log(res);
+    console.dir(res, {colors: true, depth: Infinity});
 });
 
 //schema(<query>, <variables>)
