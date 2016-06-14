@@ -34,7 +34,7 @@ var schema = Schema(`
     type Film {
         title: String!
         producers: [String]
-        characters(): [Character]
+        characters(limit: Int): [Character]
         release_date: Date
     }
 
@@ -59,7 +59,10 @@ var schema = Schema(`
     },
     Film: {
         characters (film, args){
-            return film.character_ids.map(function (id) {
+            var id_character = args.limit 
+                ? film.character_ids.slice(0, args.limit)
+                : film.character_ids;
+            return id_character.map(function (id) {
                 return characters[id]
             });
         }
@@ -93,7 +96,7 @@ schema(`
             title
             producers
             release_date
-            characters {
+            characters(limit: 2) {
                 id
                 name
             }
