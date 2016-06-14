@@ -1,4 +1,4 @@
-var Schema = require("graphql");
+var Schema = require("graph.ql");
 
 var schema = Schema(`
 
@@ -19,30 +19,53 @@ var schema = Schema(`
 
     type Planet {
         name: String!
-        population: In
+        population: Int
     }
 
     type Query {
-        film (id: Int): Film
-        person (id: Int): Person
+        find_film (id: Int): Film
+        find_character (id: Int): Character
     }
 
 `,{
     Date: {
-
+        serialize: function(v){
+            return new Date(v);
+        }
     },
     Character: {
 
     },
     Film: {
-        
+
     },
     Planet: {
 
     },
     Query: {
-
+        /*
+         * query = type Query
+         * args = parameter cth. id: Int
+         */
+        find_film (query, args){
+            console.log(query, args);
+        },
+        find_character (query, args){
+            console.log(query, args);
+        }
     }
+});
+
+schema(`
+    query find($film: Int){
+        find_film(id: $film){
+            title
+        }
+    }
+`,{
+    film: 1
+}).then(function (res){
+    console.log(res);
 });
 
 //schema(<query>, <variables>)
